@@ -1,0 +1,19 @@
+{
+  "name": "banking-platform-frontend",
+  "version": "1.0.0",
+  "description": "Banking Platform Frontend",
+  "type": "module",
+  "scripts": {
+    "start": "vite",
+    "build": "vite build",
+    "dev": "vite"
+  },
+  "dependencies": {
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^5.0.2",
+    "vite": "^7.1.3"
+  }
+}
