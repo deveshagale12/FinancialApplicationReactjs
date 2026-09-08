@@ -1,37 +1,44 @@
 const API_URL =
-    "https://customerservice-mmah.onrender.com/api/v1/customers/register";
+  "https://customerservice-mmah.onrender.com/api/v1/customers/register";
 
-const API_KEY =
-    "my-secret-api-key-12345";
+const API_KEY = "my-secret-api-key-12345";
 
 export const registerCustomer = async (customerData) => {
+  const response = await fetch(API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-API-KEY": API_KEY,
+    },
+    body: JSON.stringify(customerData),
+  });
 
-    const response = await fetch(API_URL, {
-        method: "POST",
+  const data = await response.json();
 
-        headers: {
-            "Content-Type": "application/json",
-            "X-API-KEY": API_KEY,
-        },
+  // 201 - Customer created
+  if (response.status === 201) {
+    return {
+      success: true,
+      status: 201,
+      data,
+    };
+  }
 
-        body: JSON.stringify(customerData),
-    });
+  // 409 - Customer already exists
+  if (response.status === 409) {
+    return {
+      success: false,
+      status: 409,
+      message: data.message || "Customer already exists",
+      data,
+    };
+  }
 
-    let data = null;
-
-    try {
-        data = await response.json();
-    } catch {
-        data = null;
-    }
-
-    if (!response.ok) {
-        throw new Error(
-            data?.message ||
-            data?.error ||
-            `Registration failed: ${response.status}`
-        );
-    }
-
-    return data;
+  // Other API errors
+  return {
+    success: false,
+    status: response.status,
+    message: data.message || "Customer registration failed",
+    data,
+  };
 };
